@@ -15,3 +15,16 @@ function hide_cursor() {
 function show_cursor() {
     document.body.style.cursor = 'default';
 }
+
+
+function reflect_across_line(point, center, angle) {
+    var rad = angle * Math.PI / 180;
+    var normalized_point = [point[0] - center[0], point[1] - center[1]];
+    var reflected_point = [
+        Math.cos(2 * rad) * normalized_point[0] + Math.sin(2 * rad) * normalized_point[1],
+        Math.sin(2 * rad) * normalized_point[0] - Math.cos(2 * rad) * normalized_point[1]
+    ];
+    reflected_point = [reflected_point[0] + center[0], reflected_point[1] + center[1]];
+
+    return reflected_point;
+}

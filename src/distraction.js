@@ -10,7 +10,7 @@ var fixation_cross = {
     show_start_time: 0
 };
 
-var target_coords = random_in_circle(center, 200);
+var target_coords = random_along_circumference(center, 200);
 var target_circle = {
     obj_type: 'circle',
     startX: target_coords[0],
@@ -21,7 +21,7 @@ var target_circle = {
     show_end_time: 500
 };
 
-var distractor_coords = random_in_circle(center, 200);
+var distractor_coords = random_along_circumference(center, 200);
 var distractor_square = {
     obj_type: 'rect',
     startX: distractor_coords[0],
@@ -83,7 +83,7 @@ var distraction_response = {
 var intertrial_pause = {
     type: 'psychophysics',
     stimuli: [
-        fixation_cross_1
+        fixation_cross
     ],
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],

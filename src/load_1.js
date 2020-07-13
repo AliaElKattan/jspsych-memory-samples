@@ -21,7 +21,7 @@ var fixation_cross_2 = {
     show_end_time: 2000
 };
 
-var target_coords = random_in_circle(center, 200);
+var target_coords = random_along_circumference(center, 200);
 var target_circle = {
     obj_type: 'circle',
     startX: target_coords[0],

@@ -12,7 +12,7 @@ var fixation_cross = {
     show_end_time: 2000
 };
 
-var target_coords = random_in_circle(center, 200);
+var target_coords = random_along_circumference(center, 200);
 var target_circle = {
     obj_type: 'circle',
     startX: target_coords[0],
@@ -23,8 +23,8 @@ var target_circle = {
     show_end_time: 500
 };
 
-var filler_1_coords = random_in_circle(center, 200);
-var filler_2_coords = random_in_circle(center, 200);
+var filler_1_coords = random_along_circumference(center, 200);
+var filler_2_coords = random_along_circumference(center, 200);
 var filler_square_1 = {
     obj_type: 'rect',
     startX: filler_1_coords[0],

@@ -7,6 +7,13 @@ function random_in_circle(center, radius) {
 }
 
 
+function random_along_circumference(center, radius) {
+    var angle  = Math.random() * 2 * Math.PI;
+    return [radius * Math.cos(angle) + center[0],
+            radius * Math.sin(angle) + center[1]];
+}
+
+
 function hide_cursor() {
     document.body.style.cursor = 'none';
 }

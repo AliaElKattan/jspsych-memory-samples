@@ -25,6 +25,21 @@ var target_circle = {
 
 var filler_1_coords = random_along_circumference(center, 200);
 var filler_2_coords = random_along_circumference(center, 200);
+
+var test_shape = {
+    obj_type: 'equi_tri',
+    //obj_type: 'iso_tri',
+    //obj_type: 'parallel'
+    // obj_type: 'diamond',
+    startX: filler_1_coords[0],
+    startY: filler_1_coords[1],
+    height: 10,
+    // width: 5,
+    fill_color: 'blue',
+    show_start_time: 0,
+    show_end_time: 500
+};
+
 var filler_square_1 = {
     obj_type: 'rect',
     startX: filler_1_coords[0],
@@ -71,7 +86,8 @@ var filtration_stimuli = {
     stimuli: [
         fixation_cross,
         target_circle,
-        filler_square_1, filler_square_2
+        test_shape, filler_square_2 //test
+        // filler_square_1, filler_square_2
     ],
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],

@@ -33,6 +33,20 @@ var target_circle = {
 };
 
 var mirror_angle = Math.random() * 180;
+
+//for testing
+var dashed_line = {
+    obj_type: 'dashed_line',
+    startX: center[0],
+    startY: center[1],
+    angle: mirror_angle,
+    dash_length: 10,
+    line_length: 400,
+    fill_color: 'black',
+    show_start_time: 1150,
+    show_end_time: 1350
+};
+
 var mirror_line = {
     obj_type: 'line',
     startX: center[0],
@@ -99,6 +113,7 @@ var manipulation_stimuli = {
         fixation_cross_1, fixation_cross_2,
         target_circle,
         mirror_line
+        // dashed_line //for testing
     ],
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],

@@ -33,26 +33,6 @@ var distractor_square = {
     show_end_time: 1350
 };
 
-var prompt_circle = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 5,
-    fill_color: 'red',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
-var response_area = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 200,
-    line_color: 'white',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
 var distraction_stimuli = {
     type: 'psychophysics',
     stimuli: [
@@ -68,34 +48,29 @@ var distraction_stimuli = {
     on_finish: show_cursor
 }
 
-var distraction_response = {
-    type: 'psychophysics',
-    stimuli: [
-        prompt_circle,
-        response_area
-    ],
+var distraction_response = trial_response({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    response_type: 'mouse',
-    trial_duration: 10000
-};
+    duration: 10000,
+    prompt_radius: 5,
+    prompt_color: 'red',
+    response_area_radius: 200,
+    response_area_color: 'white'
+});
 
-var intertrial_pause = {
-    type: 'psychophysics',
-    stimuli: [
-        fixation_cross
-    ],
+var pause = intertrial_pause({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 650
-}
+    duration: 650,
+    cross_length: 10,
+    cross_color: 'black'
+});
 
 jsPsych.init({
     timeline: [
         distraction_stimuli,
         distraction_response,
-        intertrial_pause
+        pause
     ],
     on_finish: function() {
         jsPsych.data.displayData();

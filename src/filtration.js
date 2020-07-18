@@ -1,129 +1,58 @@
 const dimensions = [600, 600];
 const center = [dimensions[0] / 2, dimensions[1] / 2];
 
-
-var fixation_cross = {
-    obj_type: 'cross',
-    startX: center[0],
-    startY: center[1],
-    line_length: 10,
-    line_color: 'black',
-    show_start_time: 0,
-    show_end_time: 2000
-};
-
 var target_coords = random_along_circumference(center, 200);
-var target_circle = {
-    obj_type: 'circle',
-    startX: target_coords[0],
-    startY: target_coords[1],
-    radius: 5,
-    fill_color: 'red',
-    show_start_time: 0,
-    show_end_time: 500
-};
-
 var filler_1_coords = random_along_circumference(center, 200);
 var filler_2_coords = random_along_circumference(center, 200);
 
-var test_shape = {
-    obj_type: 'triangle',
-    // obj_type: 'parallel',
-    // obj_type: 'diamond',
-    startX: filler_1_coords[0],
-    startY: filler_1_coords[1],
-    height: 10,
-    // width: 10,
-    fill_color: 'blue',
-    show_start_time: 0,
-    show_end_time: 500
-};
-
-var filler_square_1 = {
-    obj_type: 'rect',
-    startX: filler_1_coords[0],
-    startY: filler_1_coords[1],
-    width: 10,
-    height: 10,
-    fill_color: 'blue',
-    show_start_time: 0,
-    show_end_time: 500
-};
-var filler_square_2 = {
-    obj_type: 'rect',
-    startX: filler_2_coords[0],
-    startY: filler_2_coords[1],
-    width: 10,
-    height: 10,
-    fill_color: 'green',
-    show_start_time: 0,
-    show_end_time: 500
-};
-
-var prompt_circle = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 5,
-    fill_color: 'red',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
-var response_area = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 200,
-    line_color: 'white',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
-var filtration_stimuli = {
-    type: 'psychophysics',
-    stimuli: [
-        fixation_cross,
-        target_circle,
-        test_shape, filler_square_2 //test
-        // filler_square_1, filler_square_2
-    ],
+var filtration_stimuli = trial_filtration({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 2000,
-    on_start: hide_cursor,
-    on_finish: show_cursor
-}
+    duration: 2000,
 
-var filtration_response = {
-    type: 'psychophysics',
-    stimuli: [
-        prompt_circle,
-        response_area
-    ],
+    cross_length: 10,
+    cross_color: 'black',
+
+    target_coords: target_coords,
+    target_color: 'red',
+    target_size: 10,
+    target_end_time: 500,
+
+    filler_shape: 'triangle',
+    filler_num: 2,
+    filler_start_time: 0,
+    filler_end_time: 500,
+    filler_coords: [filler_1_coords, filler_2_coords],
+    filler_color: ['blue', 'green'],
+    filler_height: 10
+});
+
+var filtration_response = trial_response({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    response_type: 'mouse',
-    trial_duration: 10000
-};
+    duration: 10000,
 
-var intertrial_pause = {
-    type: 'psychophysics',
-    stimuli: [
-        fixation_cross
-    ],
+    prompt_radius: 5,
+    prompt_color: 'red',
+
+    response_area_radius: 200,
+    response_area_color: 'white'
+});
+
+var pause = intertrial_pause({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 650
-}
+    duration: 650,
+
+    cross_length: 10,
+    cross_color: 'black'
+});
 
 jsPsych.init({
     timeline: [
         filtration_stimuli,
         filtration_response,
-        intertrial_pause
+        pause
     ],
     on_finish: function() {
         jsPsych.data.displayData();

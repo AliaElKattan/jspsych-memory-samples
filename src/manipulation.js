@@ -58,26 +58,6 @@ var mirror_line = {
     show_end_time: 1350
 };
 
-var prompt_circle = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 5,
-    fill_color: 'red',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
-var response_area = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 200,
-    line_color: 'white',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
 var intertrial_line = {
     obj_type: 'line',
     startX: center[0],
@@ -123,17 +103,17 @@ var manipulation_stimuli = {
     on_finish: show_cursor
 }
 
-var manipulation_response = {
-    type: 'psychophysics',
-    stimuli: [
-        prompt_circle,
-        response_area
-    ],
+var manipulation_response = trial_response({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    response_type: 'mouse',
-    trial_duration: 10000
-};
+    duration: 10000,
+
+    prompt_radius: 5,
+    prompt_color: 'red',
+
+    response_area_radius: 200,
+    response_area_color: 'white'
+});
 
 var intertrial_pause = {
     type: 'psychophysics',

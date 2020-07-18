@@ -27,14 +27,13 @@ var filler_1_coords = random_along_circumference(center, 200);
 var filler_2_coords = random_along_circumference(center, 200);
 
 var test_shape = {
-    obj_type: 'equi_tri',
-    //obj_type: 'iso_tri',
-    //obj_type: 'parallel'
+    obj_type: 'triangle',
+    // obj_type: 'parallel',
     // obj_type: 'diamond',
     startX: filler_1_coords[0],
     startY: filler_1_coords[1],
     height: 10,
-    // width: 5,
+    // width: 10,
     fill_color: 'blue',
     show_start_time: 0,
     show_end_time: 500

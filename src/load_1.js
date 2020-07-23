@@ -43,26 +43,6 @@ var retrocue = {
     show_end_time: 1350
 };
 
-var prompt_circle = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 5,
-    fill_color: 'red',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
-var response_area = {
-    obj_type: 'circle',
-    startX: center[0],
-    startY: center[1],
-    radius: 200,
-    line_color: 'white',
-    show_start_time: 0,
-    show_end_time: 10000
-};
-
 var load_1_stimuli = {
     type: 'psychophysics',
     stimuli: [
@@ -78,34 +58,32 @@ var load_1_stimuli = {
     on_finish: show_cursor
 }
 
-var load_1_response = {
-    type: 'psychophysics',
-    stimuli: [
-        prompt_circle,
-        response_area
-    ],
+var load_1_response = trial_response({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    response_type: 'mouse',
-    trial_duration: 10000
-};
+    duration: 10000,
 
-var intertrial_pause = {
-    type: 'psychophysics',
-    stimuli: [
-        fixation_cross_1
-    ],
+    prompt_radius: 5,
+    prompt_color: 'red',
+
+    response_area_radius: 200,
+    response_area_color: 'white'
+});
+
+var pause = intertrial_pause({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 650
-}
+    duration: 650,
+
+    cross_length: 10,
+    cross_color: 'black'
+});
 
 jsPsych.init({
     timeline: [
         load_1_stimuli,
         load_1_response,
-        intertrial_pause
+        pause
     ],
     on_finish: function() {
         jsPsych.data.displayData();

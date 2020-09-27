@@ -4,10 +4,29 @@
         <title>Distraction</title>
         <script src="../lib/jspsych.js"></script>
         <script src="../lib/jspsych-html-button-response.js"></script>
+        <script src="../lib/jspsych-html-keyboard-response.js"></script>
         <script src="../lib/jspsych-psychophysics.js"></script>
         <script src="../lib/sreenivasan-custom.js"></script>
         <link href="../css/jspsych.css" rel="stylesheet" type="text/css"></link>
       </head>
-      <body></body>
+      <body>
+        
+        <div id="dpi" style="height: 1mm; width: 1mm; left: 100%; position: fixed; top: 100%;"></div>
+
+        <script>
+
+          var dpi_x = document.getElementById('dpi').offsetWidth;
+          var dpi_y = document.getElementById('dpi').offsetHeight;
+          
+          var width = screen.width / dpi_x;
+          var height = screen.height / dpi_y;
+
+          console.log("Resolution: ", dpi_x, ", ", dpi_y);
+          console.log("Size: ", width, ", ", height);
+
+
+          </script>
+
+      </body>
       <script src="../src/distraction.js"></script>
 </html>

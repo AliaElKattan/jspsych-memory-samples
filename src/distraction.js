@@ -1,10 +1,15 @@
 const dimensions = [600, 600];
 const center = [dimensions[0] / 2, dimensions[1] / 2];
 
+
+timeline = [];
+
+for (var i =0; i<1;i++) {
+
 var target_coords = random_along_circumference(center, 200);
 var distractor_coords = random_along_circumference(center, 200);
 
-var distraction_stimuli = trial_distraction({
+    var distraction_stimuli = trial_distraction({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
     duration: 2000,
@@ -24,7 +29,7 @@ var distraction_stimuli = trial_distraction({
     distractor_end_time: 1350
 });
 
-var canvas = document.getElementById("myCanvas");
+timeline.push(distraction_stimuli);
 
 var distraction_response = trial_response({
     canvas_width: dimensions[0],
@@ -36,8 +41,42 @@ var distraction_response = trial_response({
 
     response_area_radius: 200,
     response_area_color: 'white'
-
 });
+
+timeline.push(distraction_response);
+
+}
+// var feedback_screen = feedback_display({
+//     canvas_width: dimensions[0],
+//     canvas_height: dimensions[1],
+//     duration: 2000,
+
+//     stimuli_size: 10,    
+//     target_coords: target_coords,
+//     target_color: 'red',
+
+//     response_area_radius: 200,
+//     response_area_color: 'white'
+// });
+
+
+const CORRECT = "<p style='color: green;'>Correct</p>"
+const WRONG = "<p style='color: red;'>Wrong</p>"
+
+
+// var answer = {
+//         type: 'html-keyboard-response',
+//         stimulus: function() {
+//                 if (1<2) { //placeholder
+//                     return CORRECT;
+//                 } else {
+//                 return WRONG;
+//             }
+//             },
+//         choices: jsPsych.NO_KEYS,
+//         trial_duration: 1000
+//     };
+
 
 var pause = intertrial_pause({
     canvas_width: dimensions[0],
@@ -48,13 +87,12 @@ var pause = intertrial_pause({
     cross_color: 'black'
 });
 
+timeline.push(pause);
+
 jsPsych.init({
-    timeline: [
-        distraction_stimuli,
-        distraction_response,
-        pause
-    ],
+    timeline: timeline,
     on_finish: function() {
         jsPsych.data.displayData();
+        jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','test_data.csv');
     }
 });

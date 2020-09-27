@@ -14,109 +14,19 @@
       
 
       <script>
-       // display_element.innerHTML = new_html;
 
-    function writeMessage(canvas, message) {
-        var context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.font = '18pt Calibri';
-        context.fillStyle = 'black';
-        context.fillText(message, 10, 25);
-      }
-    
-    function writePolar(canvas, message) {
-        var context = canvas.getContext('2d');
-        // context.clearRect(0, 0, canvas.width, canvas.height);
-        context.font = '18pt Calibri';
-        context.fillStyle = 'black';
-        context.fillText(message, 10, 50);
+      function mouseClickListener(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        var polar = pixeltoPolar(canvas,[mousePos.x,mousePos.y]);
+        var polarMessage = 'Polar coord: ' + polar[0] + ',' + polar[1];
+        console.log(polarMessage);
+        clickLocation.push(polar);
       }
 
-      function getMousePolar(canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
-        return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
-        };
-      }
+      var clickLocation = [];
+
       var canvas = document.getElementById('myCanvas');
-      var context = canvas.getContext('2d');
-
-      canvas.addEventListener('click', function(evt) {
-        var mousePos = getMousePolar(canvas, evt);
-
-        var x_axis = mousePos.x - canvas.width/2;
-        var y_axis = canvas.height/2 - mousePos.y;
-
-        var polar_distance = Math.sqrt(Math.pow(Math.abs(x_axis),2) + Math.pow(Math.abs(y_axis),2));
-
-        var angle = Math.atan(Math.abs(y_axis)/Math.abs(x_axis));
-
-        var polar_angle;
-
-        if (y_axis >= 0) {
-            if (x_axis > 0) polar_angle = angle;
-            if (x_axis === 0) polar_angle = Math.PI / 2;
-            if (x_axis < 0) polar_angle = Math.PI - angle;            
-        }
-
-        if (y_axis < 0) {
-          if (x_axis < 0) polar_angle = Math.PI + angle;
-          if (x_axis === 0) polar_angle = 3*(Math.PI/2);
-          if (x_axis > 0) polar_angle = 2*(Math.PI) - angle;
-
-        }
-
-        //todo: replace way to store this.. maybe take data as parameter and add to it
-        var message = 'Mouse position: ' + x_axis + ',' + y_axis;
-
-        var polarMessage = 'Polar coord: ' + polar_distance.toFixed(3) + ',' + polar_angle.toFixed(3);
-
-        writeMessage(canvas, message);
-        writePolar(canvas, polarMessage);
-
-        return [polar_distance.toFixed(3), polar_angle.toFixed(3)]
-      }, false);
-
-
-      //standalone conversion function
-      //assuming position is an array of two values, the canvas x and y -- can change this depending on how we format
-      //check how this works with a plugin
-      function pixeltoPolar(canvas,position) {
-
-        //convert canvas pixel, which start at 0,0 in the upper leftmost point and increase x and y as we go right and downwards - to a normal x,y grid that is centered at the center of the canvas.
-
-        var x_axis = position[0] - canvas.width/2;
-        var y_axis = canvas.height/2 - position[1];
-
-        //calculate distance from 0,0 point to x,y point
-        var polar_distance = Math.sqrt(Math.pow(Math.abs(x_axis),2) + Math.pow(Math.abs(y_axis),2));
-
-        //calculate angle between x-axis and point
-        var angle = Math.atan(Math.abs(y_axis)/Math.abs(x_axis));
-
-        var polar_angle;
-
-        //convert angle to the polar angle depending on which quadrant it's in (?)
-        if (y_axis >= 0) {
-            if (x_axis > 0) polar_angle = angle;
-            if (x_axis === 0) polar_angle = Math.PI / 2;
-            if (x_axis < 0) polar_angle = Math.PI - angle;            
-        }
-
-        if (y_axis < 0) {
-          if (x_axis < 0) polar_angle = Math.PI + angle;
-          if (x_axis === 0) polar_angle = 3*(Math.PI/2);
-          if (x_axis > 0) polar_angle = 2*(Math.PI) - angle;
-
-        }
-
-        var polar = [polar_distance.toFixed(3), angle.toFixed(3)];
-
-        return polar;
-
-      }
-
+      canvas.addEventListener('click', mouseClickListener, false);
 
     </script>
   </body>

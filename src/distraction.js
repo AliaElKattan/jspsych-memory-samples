@@ -24,6 +24,8 @@ var distraction_stimuli = trial_distraction({
     distractor_end_time: 1350
 });
 
+var canvas = document.getElementById("myCanvas");
+
 var distraction_response = trial_response({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
@@ -34,6 +36,7 @@ var distraction_response = trial_response({
 
     response_area_radius: 200,
     response_area_color: 'white'
+
 });
 
 var pause = intertrial_pause({

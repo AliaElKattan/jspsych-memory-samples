@@ -48,7 +48,7 @@ var distraction_response = trial_response({
     duration: 10000,
 
     prompt_radius: 5,
-    prompt_color: 'red',
+    prompt_color: map[i].target_color,
 
     response_area_radius: 200,
     response_area_color: 'white'

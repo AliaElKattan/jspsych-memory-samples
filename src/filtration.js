@@ -28,8 +28,8 @@ var filtration_stimuli = trial_filtration({
     cross_color: 'black',
 
     target_coords: map[i].target_coords,
-    target_color: 'red',
-    // target_color: map[i].target_color,
+    // target_color: 'red',
+    target_color: map[i].target_color,
     target_size: 10,
     target_end_time: 500,
 
@@ -51,7 +51,8 @@ var filtration_response = trial_response({
     duration: 10000,
 
     prompt_radius: 5,
-    prompt_color: 'red',
+    // prompt_color: 'red',
+    prompt_color: map[i].target_color,
 
     response_area_radius: 200,
     response_area_color: 'white'

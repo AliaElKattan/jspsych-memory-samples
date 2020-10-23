@@ -1,6 +1,20 @@
 const dimensions = [600, 600];
 const center = [dimensions[0] / 2, dimensions[1] / 2];
+const radius = 200;
 
+var timeline = [];
+
+var trial_num = 5;
+var trial_count= 0;
+
+var map = [];
+
+for (var i =0;i<trial_num;i++) {
+    map.push(generate_taskmap(dimensions[0], dimensions[1],center,radius));
+}
+
+
+for (var i =0;i<trial_num;i++) {
 
 var fixation_cross_1 = {
     obj_type: 'cross',
@@ -21,13 +35,14 @@ var fixation_cross_2 = {
     show_end_time: 2000
 };
 
-var target_coords = random_along_circumference(center, 200);
+// var target_coords = random_along_circumference(center, 200);
 var target_circle = {
     obj_type: 'circle',
-    startX: target_coords[0],
-    startY: target_coords[1],
+    startX: map[i].target_coords[0],
+    startY: map[i].target_coords[1],
     radius: 5,
-    fill_color: 'red',
+    // fill_color: 'red',
+    fill_color: map[i].target_color,
     show_start_time: 0,
     show_end_time: 500
 };
@@ -55,8 +70,13 @@ var load_1_stimuli = {
     choices: jsPsych.NO_KEYS,
     trial_duration: 2000,
     on_start: hide_cursor,
-    on_finish: show_cursor
+    on_finish: function(data) {
+            show_cursor();
+            data.target_pos = map[trial_count].target_coords;
+    }
 }
+
+timeline.push(load_1_stimuli);
 
 var load_1_response = trial_response({
     canvas_width: dimensions[0],
@@ -64,11 +84,13 @@ var load_1_response = trial_response({
     duration: 10000,
 
     prompt_radius: 5,
-    prompt_color: 'red',
-
+    // prompt_color: 'red',
+    prompt_color: map[i].target_color,
+    
     response_area_radius: 200,
     response_area_color: 'white'
 });
+timeline.push(load_1_response);
 
 var pause = intertrial_pause({
     canvas_width: dimensions[0],
@@ -78,14 +100,15 @@ var pause = intertrial_pause({
     cross_length: 10,
     cross_color: 'black'
 });
+timeline.push(pause);
+
+}
+
 
 jsPsych.init({
-    timeline: [
-        load_1_stimuli,
-        load_1_response,
-        pause
-    ],
+    timeline: timeline,
     on_finish: function() {
-        jsPsych.data.displayData();
+        // jsPsych.data.displayData();
+         jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','load1_data.csv');
     }
 });

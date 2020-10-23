@@ -18,8 +18,6 @@ for (var i =0; i<trial_num;i++) {
 // var target_coords = random_along_circumference(center, 200);
 // var distractor_coords = random_along_circumference(center, 200);
 
-var map = generate_taskmap(dimensions[0], dimensions[1],center,radiuss);
-
     var distraction_stimuli = trial_distraction({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],

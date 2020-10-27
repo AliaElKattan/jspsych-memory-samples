@@ -8,13 +8,25 @@ var trial_num = 5;
 //trial index counter (don't change)
 var trial_count = 0;
 
-//generate taskmap
+var curr_points = 0;
+var timeline = [];
 var map = [];
+
+//taskmap
 for (var i =0;i<trial_num;i++) {
-    map.push(generate_taskmap(dimensions[0], dimensions[1],center,radius));
+
+    var settings = {
+        canvas_width: dimensions[0],
+        canvas_height: dimensions[1],
+        center: center,
+        radius: radius,
+        colors: taskmap_colors
+    };
+
+
+    map.push(generate_taskmap(settings));
 }
 
-var timeline = [];
 
 for (var i =0; i<trial_num;i++) {
 
@@ -126,6 +138,32 @@ var pause = intertrial_pause({
     cross_color: 'black'
 });
 timeline.push(pause);
+
+var feedback = feedback_display({
+    feedback_type: "display",
+    canvas_width: dimensions[0],
+    canvas_height: dimensions[1],
+
+    stimuli_size: 10,    
+    target_coords: map[i].target_coords,
+    target_color: map[i].target_color,
+
+    response_area_radius: radius,
+    response_area_color: 'white',
+    duration: 2000
+});
+
+// var feedback = feedback_display({
+//     feedback_type: "text",
+//     canvas_width: dimensions[0],
+//     canvas_height: dimensions[1],
+//     duration: 2000
+// });
+
+timeline.push(feedback);
+
+timeline.push(pause);
+
 }
 
 jsPsych.init({

@@ -5,12 +5,29 @@ const radius = 200;
 var trial_num = 5;
 var trial_count = 0;
 
+var curr_points = 0;
+
 var timeline = [];
 
 var map = [];
 
+//taskmap
 for (var i =0;i<trial_num;i++) {
-    map.push(generate_taskmap(dimensions[0], dimensions[1],center,radius));
+
+    var settings = {
+        canvas_width: dimensions[0],
+        canvas_height: dimensions[1],
+        center: center,
+        radius: radius,
+        colors: taskmap_colors
+    };
+
+
+    map.push(generate_taskmap(settings));
+
+    map[i]['mirror_angle'] = Math.random() * 180;
+    map[i]['mirrored_coords'] = reflect_across_line(map[i].target_coords, center, map[i].mirror_angle);
+
 }
 
 
@@ -47,14 +64,14 @@ var target_circle = {
     show_end_time: 500
 };
 
-var mirror_angle = Math.random() * 180;
+
 
 //for testing
 var dashed_line = {
     obj_type: 'dashed_line',
     startX: center[0],
     startY: center[1],
-    angle: mirror_angle,
+    angle: map[i].mirror_angle,
     dash_length: 10,
     line_length: 400,
     fill_color: 'black',
@@ -66,7 +83,7 @@ var mirror_line = {
     obj_type: 'line',
     startX: center[0],
     startY: center[1],
-    angle: mirror_angle,
+    angle: map[i].mirror_angle,
     line_length: 400,
     fill_color: 'black',
     show_start_time: 1150,
@@ -77,7 +94,7 @@ var intertrial_line = {
     obj_type: 'line',
     startX: center[0],
     startY: center[1],
-    angle: mirror_angle,
+    angle: map[i].mirror_angle,
     line_length: 400,
     fill_color: 'black',
     show_start_time: 0
@@ -93,12 +110,10 @@ var stimulus_circle = {
     show_start_time: 0
 };
 
-var mirrored_coords = reflect_across_line(map[i].target_coords, center, mirror_angle);
-
 var correct_circle = {
     obj_type: 'circle',
-    startX: mirrored_coords[0],
-    startY: mirrored_coords[1],
+    startX: map[i].mirrored_coords[0],
+    startY: map[i].mirrored_coords[1],
     radius: 5,
     fill_color: 'green',
     show_start_time: 0
@@ -119,7 +134,8 @@ var manipulation_stimuli = {
     on_start: hide_cursor,
         on_finish: function(data) {
             show_cursor();
-            data.target_pos = map[trial_count].target_coords;
+            // data.target_pos = map[trial_count].target_coords;
+            data.target_pos = map[trial_count].mirrored_coords;
        }
 }
 timeline.push(manipulation_stimuli);
@@ -151,6 +167,8 @@ var intertrial_pause = {
     trial_duration: 650
 }
 timeline.push(intertrial_pause);
+
+
 
 }
 

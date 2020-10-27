@@ -9,11 +9,26 @@ var trial_num = 5;
 //trial index counter
 var trial_count = 0;
 
+var curr_points = 0;
+
 var map = [];
 
+
+//taskmap
 for (var i =0;i<trial_num;i++) {
-    map.push(generate_taskmap(dimensions[0], dimensions[1],center,radius));
+
+    var settings = {
+        canvas_width: dimensions[0],
+        canvas_height: dimensions[1],
+        center: center,
+        radius: radius,
+        colors: taskmap_colors
+    };
+
+
+    map.push(generate_taskmap(settings));
 }
+
 
 for (var i =0; i<trial_num;i++) {
 
@@ -37,7 +52,6 @@ var fixation_cross_2 = {
     show_end_time: 2000
 };
 
-// var target_coords = random_along_circumference(center, 200);
 var target_circle = {
     obj_type: 'circle',
     startX: map[i].target_coords[0],
@@ -49,8 +63,6 @@ var target_circle = {
     show_end_time: 500
 };
 
-// var filler_1_coords = random_along_circumference(center, 200);
-// var filler_2_coords = random_along_circumference(center, 200);
 var filler_1_circle = {
     obj_type: 'circle',
     startX: map[i].filler_1_coords[0],
@@ -126,6 +138,31 @@ var pause = intertrial_pause({
     cross_length: 10,
     cross_color: 'black'
 });
+timeline.push(pause);
+
+var feedback = feedback_display({
+    feedback_type: "display",
+    canvas_width: dimensions[0],
+    canvas_height: dimensions[1],
+
+    stimuli_size: 10,    
+    target_coords: map[i].target_coords,
+    target_color: map[i].target_color,
+
+    response_area_radius: radius,
+    response_area_color: 'white',
+    duration: 2000
+});
+
+// var feedback = feedback_display({
+//     feedback_type: "text",
+//     canvas_width: dimensions[0],
+//     canvas_height: dimensions[1],
+//     duration: 2000
+// });
+
+timeline.push(feedback);
+
 timeline.push(pause);
 
 }

@@ -1,17 +1,64 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Memory Experiments</title>
-      </head>
-      <body>
-          <h3>Samples</h3>
-          <ul>
-              <li><a href="trial_types/manipulation.html">Manipulation</a></li>
-              <li><a href="trial_types/load_1.html">Load 1</a></li>
-              <li><a href="trial_types/filtration.html">Filtration</a></li>
-              <li><a href="trial_types/distraction.html">Distraction</a></li>
-              <li><a href="trial_types/retrocue.html">Retrocue</a></li>
-              <li><a href="trial_types/load_3.html">Load 3</a></li>
-          </ul>
-      </body>
+<head>
+  <title>Memory Experiments</title>
+
+  <script src="lib/jspsych.js"></script>
+  <script src="lib/jspsych-html-button-response.js"></script>
+  <script src="lib/jspsych-html-keyboard-response.js"></script>
+  <script src="lib/jspsych-psychophysics-mem.js"></script>
+  <script src="lib/sreenivasan-custom.js"></script>
+  <script src="lib/colors.js"></script>
+  <script src="lib/dist_offsets.js"></script>
+  <link href="css/jspsych.css" rel="stylesheet" type="text/css"></link>
+
+
+</head>
+<body>
+
+  <script>
+    var timeline = [];
+
+    const dimensions = [600, 600];
+    const center = [dimensions[0] / 2, dimensions[1] / 2];
+    const radius = 200;
+
+
+  </script>
+
+  <!-- comment out/in whichever trials you want to include. go to the individual files to choose how many of -->
+
+  <script src="src/distraction.js"></script>
+  
+  <script src="src/filtration.js"></script>
+  
+  <script src="src/load_1.js"></script>
+
+  <script src="src/load_3.js"></script>
+  
+  <script src="src/manipulation.js"></script>
+  
+  <script src="src/retrocue.js"></script>
+
+
+  <script>
+
+    jsPsych.init({
+      timeline: timeline,
+      on_finish: function() {
+
+        // jsPsych.data.displayData();
+        jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','data.csv');
+      }
+    });
+
+
+
+
+  </script>
+
+</body>
+
+
+
 </html>

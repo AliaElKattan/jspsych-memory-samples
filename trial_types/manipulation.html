@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Manipulation</title>
-        <script src="../lib/jspsych.js"></script>
-        <script src="../lib/jspsych-html-button-response.js"></script>
-        <script src="../lib/jspsych-psychophysics-mem.js"></script>
-        <script src="../lib/sreenivasan-custom.js"></script>
-          <script src="../lib/colors.js"></script>
-        <link href="../css/jspsych.css" rel="stylesheet" type="text/css"></link>
-      </head>
-      <body></body>
-      <script src="../src/manipulation.js"></script>
+<head>
+  <title>Manipulation</title>
+  <script src="../lib/jspsych.js"></script>
+  <script src="../lib/jspsych-html-button-response.js"></script>
+  <script src="../lib/jspsych-psychophysics-mem.js"></script>
+  <script src="../lib/sreenivasan-custom.js"></script>
+  <script src="../lib/colors.js"></script>
+  <link href="../css/jspsych.css" rel="stylesheet" type="text/css"></link>
+</head>
+<body>
+
+  <script> 
+    var timeline = [];
+
+    const dimensions = [600, 600];
+    const center = [dimensions[0] / 2, dimensions[1] / 2];
+    const radius = 200;
+
+  </script>
+
+  <script src="../src/manipulation.js"></script>
+
+  <script>
+    jsPsych.init({
+      timeline: timeline,
+      on_finish: function() {
+
+        // jsPsych.data.displayData();
+        jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','manipulation_data.csv');
+      }
+    });
+  </script>
+
+</body>
 </html>

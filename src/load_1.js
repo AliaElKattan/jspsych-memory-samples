@@ -1,17 +1,21 @@
-const dimensions = [600, 600];
-const center = [dimensions[0] / 2, dimensions[1] / 2];
-const radius = 200;
+// const dimensions = [600, 600];
+// const center = [dimensions[0] / 2, dimensions[1] / 2];
+// const radius = 200;
 
-var timeline = [];
+// var timeline = [];
 
-var trial_num = 5;
-var trial_count= 0;
+//reset counters
+var trial_num = 1;
+var trial_count = 0;
+//?
 var curr_points = 0;
 
-var map = [];
+var load_1_map = [];
+
+var load_1_count = 0;
 
 //taskmap
-for (var i =0;i<trial_num;i++) {
+for (var i=0;i<trial_num;i++) {
 
     var settings = {
         canvas_width: dimensions[0],
@@ -22,7 +26,7 @@ for (var i =0;i<trial_num;i++) {
     };
 
 
-    map.push(generate_taskmap(settings));
+    load_1_map.push(generate_taskmap(settings));
 }
 
 for (var i =0;i<trial_num;i++) {
@@ -49,11 +53,11 @@ var fixation_cross_2 = {
 // var target_coords = random_along_circumference(center, 200);
 var target_circle = {
     obj_type: 'circle',
-    startX: map[i].target_coords[0],
-    startY: map[i].target_coords[1],
+    startX: load_1_map[i].target_coords[0],
+    startY: load_1_map[i].target_coords[1],
     radius: 5,
     // fill_color: 'red',
-    fill_color: map[i].target_color,
+    fill_color: load_1_map[i].target_color,
     show_start_time: 0,
     show_end_time: 500
 };
@@ -69,6 +73,8 @@ var retrocue = {
     show_end_time: 1350
 };
 
+
+
 var load_1_stimuli = {
     type: 'psychophysics',
     stimuli: [
@@ -83,20 +89,22 @@ var load_1_stimuli = {
     on_start: hide_cursor,
     on_finish: function(data) {
             show_cursor();
-            data.target_pos = map[trial_count].target_coords;
+            data.target_pos = load_1_map[load_1_count].target_coords;
+            load_1_count +=1;
     }
 }
 
 timeline.push(load_1_stimuli);
 
 var load_1_response = trial_response({
+    sample_type: "load_1",
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
     duration: 10000,
 
     prompt_radius: 5,
     // prompt_color: 'red',
-    prompt_color: map[i].target_color,
+    prompt_color: load_1_map[i].target_color,
     
     response_area_radius: 200,
     response_area_color: 'white'
@@ -119,8 +127,8 @@ var feedback = feedback_display({
     canvas_height: dimensions[1],
 
     stimuli_size: 10,    
-    target_coords: map[i].target_coords,
-    target_color: map[i].target_color,
+    target_coords: load_1_map[i].target_coords,
+    target_color: load_1_map[i].target_color,
 
     response_area_radius: radius,
     response_area_color: 'white',
@@ -142,10 +150,10 @@ timeline.push(pause);
 }
 
 
-jsPsych.init({
-    timeline: timeline,
-    on_finish: function() {
-        // jsPsych.data.displayData();
-         jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','load1_data.csv');
-    }
-});
+// jsPsych.init({
+//     timeline: timeline,
+//     on_finish: function() {
+//         // jsPsych.data.displayData();
+//          jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','load1_data.csv');
+//     }
+// });

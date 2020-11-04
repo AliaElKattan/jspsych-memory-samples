@@ -1,17 +1,18 @@
-const dimensions = [600, 600];
-const center = [dimensions[0] / 2, dimensions[1] / 2];
-const radius = 200;
+// const dimensions = [600, 600];
+// const center = [dimensions[0] / 2, dimensions[1] / 2];
+// const radius = 200;
 
 //TOTAL NUMBER OF TRIALS
-var trial_num = 5;
+var trial_num = 1;
 
 //trial index counter (don't change)
-var trial_count = 0;
+trial_count = 0;
 
 var curr_points = 0;
-var timeline = [];
-var map = [];
+// var timeline = [];
+var retrocue_map = [];
 
+var retrocue_count = 0;
 //taskmap
 for (var i =0;i<trial_num;i++) {
 
@@ -24,7 +25,7 @@ for (var i =0;i<trial_num;i++) {
     };
 
 
-    map.push(generate_taskmap(settings));
+    retrocue_map.push(generate_taskmap(settings));
 }
 
 
@@ -52,11 +53,11 @@ var fixation_cross_2 = {
 // var target_coords = random_along_circumference(center, 200);
 var target_circle = {
     obj_type: 'circle',
-    startX: map[i].target_coords[0],
-    startY: map[i].target_coords[1],
+    startX: retrocue_map[i].target_coords[0],
+    startY: retrocue_map[i].target_coords[1],
     radius: 5,
     // fill_color: 'red',
-    fill_color: map[i].target_color,
+    fill_color: retrocue_map[i].target_color,
     show_start_time: 0,
     show_end_time: 500
 };
@@ -65,21 +66,21 @@ var target_circle = {
 // var filler_2_coords = random_along_circumference(center, 200);
 var filler_1_circle = {
     obj_type: 'circle',
-    startX: map[i].filler_1_coords[0],
-    startY: map[i].filler_1_coords[1],
+    startX: retrocue_map[i].filler_1_coords[0],
+    startY: retrocue_map[i].filler_1_coords[1],
     radius: 5,
     // fill_color: 'blue',
-    fill_color: map[i].filler_1_color,
+    fill_color: retrocue_map[i].filler_1_color,
     show_start_time: 0,
     show_end_time: 500
 };
 var filler_2_circle = {
     obj_type: 'circle',
-    startX: map[i].filler_2_coords[0],
-    startY: map[i].filler_2_coords[1],
+    startX: retrocue_map[i].filler_2_coords[0],
+    startY: retrocue_map[i].filler_2_coords[1],
     radius: 5,
     // fill_color: 'green',
-    fill_color: map[i].filler_2_color,
+    fill_color: retrocue_map[i].filler_2_color,
     show_start_time: 0,
     show_end_time: 500
 };
@@ -91,7 +92,7 @@ var retrocue = {
     width: 10,
     height: 10,
     // fill_color: 'red',
-    fill_color: map[i].target_color,
+    fill_color: retrocue_map[i].target_color,
     show_start_time: 1150,
     show_end_time: 1350
 };
@@ -111,29 +112,33 @@ var retrocue_stimuli = {
     on_start: hide_cursor,
     on_finish: function(data) {
             show_cursor();
-            data.target_pos = map[trial_count].target_coords;
+            data.target_pos = retrocue_map[retrocue_count].target_coords;
        }
 }
 timeline.push(retrocue_stimuli);
 
 var retrocue_response = trial_response({
+    sample_type: "retrocue",
+    
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
     duration: 10000,
 
     prompt_radius: 5,
     // prompt_color: 'red',
-    prompt_color: map[i].target_color,
+    prompt_color: retrocue_map[i].target_color,
 
     response_area_radius: 200,
     response_area_color: 'white'
 });
 timeline.push(retrocue_response);
 
+
 var pause = intertrial_pause({
     canvas_width: dimensions[0],
     canvas_height: dimensions[1],
     duration: 650,
+
     cross_length: 10,
     cross_color: 'black'
 });
@@ -145,8 +150,8 @@ var feedback = feedback_display({
     canvas_height: dimensions[1],
 
     stimuli_size: 10,    
-    target_coords: map[i].target_coords,
-    target_color: map[i].target_color,
+    target_coords: retrocue_map[i].target_coords,
+    target_color: retrocue_map[i].target_color,
 
     response_area_radius: radius,
     response_area_color: 'white',
@@ -166,12 +171,12 @@ timeline.push(pause);
 
 }
 
-jsPsych.init({
-    timeline: timeline,
-    on_finish: function() {
-        // jsPsych.data.displayData();
+// jsPsych.init({
+//     timeline: timeline,
+//     on_finish: function() {
+//         // jsPsych.data.displayData();
 
-         jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','retrocue_data.csv');
+//          jsPsych.data.get().filter({collect: "TRUE"}).ignore(['collect', 'trial_type', 'trial_index', 'internal_node_id', 'key_press']).localSave('csv','retrocue_data.csv');
 
-    }
-});
+//     }
+// });
